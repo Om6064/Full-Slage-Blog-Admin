@@ -1,0 +1,125 @@
+<%- include("partials/start.ejs") %>
+<%- include("partials/navBar.ejs") %>
+<%- include("partials/aside.ejs") %>
+
+<main class="min-h-screen bg-slate-100 flex items-center justify-center px-4">
+  <div class="w-full max-w-3xl">
+
+    <!-- Header -->
+    <div class="mb-8 text-center">
+      <a href="/admin" class="inline-flex items-center gap-3">
+        <!-- <img src="/assets/images/logo.svg" class="h-9" alt="Logo">
+        <span class="text-2xl font-semibold text-slate-800">Blogster</span> -->
+      </a>
+      <p class="mt-2 text-sm text-slate-500">
+        Update your existing blog post
+      </p>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-white border border-slate-200 rounded-xl">
+      <div class="p-8">
+        <h1 class="text-xl font-semibold text-slate-900 mb-6">
+          Edit Blog Post
+        </h1>
+
+        <form 
+          action="/admin/edit-blog/<%= data?.id %>" 
+          method="post" 
+          enctype="multipart/form-data"
+          class="space-y-6"
+        >
+
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">
+              Title
+            </label>
+            <input
+              type="text"
+              name="blogTitle"
+              value="<%= data?.blogTitle %>"
+              required
+              class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-slate-900 focus:ring-0"
+            >
+          </div>
+
+          <!-- Image -->
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-2">
+              Cover Image
+            </label>
+
+            <input
+              type="file"
+              name="blogImage"
+              accept="image/*"
+              class="block w-full text-sm text-slate-600
+                     file:mr-4 file:rounded-md file:border file:border-slate-300
+                     file:bg-white file:px-4 file:py-2
+                     file:text-sm file:font-medium file:text-slate-700
+                     hover:file:bg-slate-50"
+            >
+
+            <!-- Preview -->
+            <div class="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 flex justify-center">
+              <img
+                src="/<%= data?.blogImage %>"
+                alt="Blog preview"
+                class="max-h-48 rounded-md object-cover"
+              >
+            </div>
+            <p class="mt-2 text-center text-xs text-slate-500">
+              Current cover image
+            </p>
+          </div>
+
+          <!-- Tags -->
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">
+              Tags
+            </label>
+            <input
+              type="text"
+              name="blogTags"
+              value="<%= data?.blogTags %>"
+              required
+              class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-slate-900 focus:ring-0"
+            >
+          </div>
+
+          <!-- Content -->
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">
+              Content
+            </label>
+            <textarea
+              name="blogDescription"
+              rows="6"
+              required
+              class="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm focus:border-slate-900 focus:ring-0 resize-none"
+            ><%= data?.blogDescription %></textarea>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex items-center justify-between pt-4">
+            <a href="/admin" class="text-sm text-slate-500 hover:text-slate-800">
+              ← Back to blogs
+            </a>
+
+            <button
+              type="submit"
+              class="rounded-lg bg-slate-900 px-6 py-2.5 text-sm font-medium text-white hover:bg-slate-800"
+            >
+              Update Blog
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<%- include("partials/end.ejs") %>

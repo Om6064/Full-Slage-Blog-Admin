@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>User – Blog Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+
+  <!-- Header -->
+  <header class="bg-blue-600 text-white p-4 flex justify-between items-center">
+    <h1 class="text-xl font-semibold">User Panel</h1>
+
+    <!-- Button to Admin -->
+    <a href="/admin" class="bg-white text-blue-600 px-4 py-2 rounded shadow font-medium">
+      Go to Admin
+    </a>
+  </header>
+
+  <!-- PAGE TITLE SECTION -->
+  <div class="text-center py-12 px-6 mt-12">
+    <h1 class="font-bold text-5xl mb-6 text-gray-800">Latest Blogs</h1>
+    <p class="max-w-lg mx-auto text-gray-600">Explore articles posted by our community</p>
+  </div>
+
+
+  <!-- BLOG LIST GRID -->
+  <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 pt-12 pb-24">
+
+    <% blogs.forEach(blog => { %>
+
+    <div class="rounded-lg shadow bg-white overflow-hidden">
+
+      <!-- Image -->
+      <a href="/admin/quick-view/<%= blog._id %>">
+        <img
+          src="/<%= blog.blogImage %>"
+          class="w-full h-52 md:h-64 lg:h-96 xl:h-64 object-cover"
+        />
+      </a>
+
+      <!-- Card Body -->
+      <div class="bg-gray-50 p-8">
+
+        <!-- Date (optional placeholder if you want real date later) -->
+        <div class="text-xs text-gray-600 uppercase font-semibold">
+          Blog • <%= blog._id.toString().slice(-6) %>
+        </div>
+
+        <!-- Title -->
+        <h2 class="mt-3 text-3xl mb-6 font-bold text-black leading-tight max-w-sm">
+          <%= blog.blogTitle %>
+        </h2>
+
+        <!-- Description -->
+        <p class="mt-4 max-w-md text-gray-700">
+          <%= blog.blogDescription.substring(0, 150) %>...
+        </p>
+
+        <!-- Read More -->
+        <a href="/admin/quick-view/<%= blog._id %>"
+          class="flex items-center mt-6 uppercase text-sm text-blue-700 font-semibold">
+          Read Article
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+              d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+
+      </div>
+    </div>
+
+    <% }) %>
+
+  </div>
+
+  <script src="/assets/js/buttons.js"></script>
+
+</body>
+
+</html>

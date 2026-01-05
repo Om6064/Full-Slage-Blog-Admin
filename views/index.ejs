@@ -1,0 +1,141 @@
+<!-- start -->
+<%- include("partials/start.ejs") %>
+<%- include("partials/navBar.ejs") %>
+
+<div class="flex bg-slate-100 pt-16 min-h-screen">
+  <%- include("partials/aside.ejs") %>
+
+  <div id="main-content" class="w-full lg:ml-64 p-6 lg:p-10">
+    <main>
+
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h1 class="text-3xl font-semibold text-slate-900">Blog Posts</h1>
+          <p class="text-slate-600">Manage all published content</p>
+        </div>
+
+        <a href="/admin/add-blog"
+          class="rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-slate-800">
+          + New Post
+        </a>
+      </div>
+
+      <% if (blogs.length === 0) { %>
+
+      <!-- Empty State -->
+      <div class="bg-white border border-slate-200 rounded-xl p-10 text-center">
+        <h2 class="text-xl font-semibold text-slate-900 mb-2">No blog posts yet</h2>
+        <p class="text-slate-600 mb-6">
+          Create your first post to start managing content.
+        </p>
+        <a href="/admin/add-blog"
+          class="inline-flex items-center rounded-lg bg-slate-900 px-6 py-3 text-sm font-medium text-white">
+          Create first post
+        </a>
+      </div>
+
+      <% } else { %>
+
+      <!-- Table -->
+      <div class="bg-white border border-slate-200 rounded-xl overflow-hidden">
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full border-collapse">
+            <thead class="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase">
+                  Cover
+                </th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase">
+                  Title
+                </th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase">
+                  Tags
+                </th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase">
+                  Excerpt
+                </th>
+                <th class="px-6 py-4 text-right text-xs font-semibold text-slate-600 uppercase">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class="divide-y divide-slate-100">
+
+              <% blogs.map((data) => { %>
+              <tr class="hover:bg-slate-50 transition">
+
+                <!-- Image -->
+                <td class="px-6 py-4">
+                  <img
+                    src="/<%= data.blogImage %>"
+                    alt="<%= data.blogTitle %>"
+                    class="h-14 w-20 rounded-md object-cover border"
+                  >
+                </td>
+
+                <!-- Title -->
+                <td class="px-6 py-4">
+                  <div class="font-medium text-slate-900 line-clamp-2">
+                    <%= data.blogTitle %>
+                  </div>
+                </td>
+
+                <!-- Tags -->
+                <td class="px-6 py-4">
+                  <% let tags = data.blogTags.split(",") %>
+                  <div class="flex flex-wrap gap-2">
+                    <% tags.forEach(tag => { %>
+                      <span class="px-2 py-1 text-xs rounded-md bg-slate-100 text-slate-700">
+                        <%= tag.trim() %>
+                      </span>
+                    <% }) %>
+                  </div>
+                </td>
+
+                <!-- Description -->
+                <td class="px-6 py-4 max-w-sm">
+                  <p class="text-sm text-slate-600 line-clamp-2">
+                    <%= data.blogDescription %>
+                  </p>
+                </td>
+
+                <!-- Actions -->
+                <td class="px-6 py-4 text-right">
+                  <div class="inline-flex items-center gap-2">
+
+                    <a href="/admin/quick-view/<%= data.id %>"
+                      class="px-3 py-1.5 text-sm rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200">
+                      View
+                    </a>
+
+                    <a href="/admin/edit-form/<%= data.id %>"
+                      class="px-3 py-1.5 text-sm rounded-md bg-indigo-50 text-indigo-600 hover:bg-indigo-100">
+                      Edit
+                    </a>
+
+                    <a href="/admin/delete-blog/<%= data.id %>"
+                      class="px-3 py-1.5 text-sm rounded-md bg-red-50 text-red-600 hover:bg-red-100">
+                      Delete
+                    </a>
+
+                  </div>
+                </td>
+              </tr>
+              <% }) %>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <% } %>
+
+    </main>
+  </div>
+</div>
+
+<script src="/assets/js/app.bundle.js"></script>
+<%- include("partials/end.ejs") %>

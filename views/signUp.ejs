@@ -1,0 +1,96 @@
+<!-- start -->
+<%- include("partials/start.ejs") %>
+
+  <main class="min-h-screen bg-white flex">
+
+    <!-- Left Info Section -->
+    <section class="hidden md:flex w-1/2 flex-col justify-center px-16 bg-gray-50 border-r border-gray-200">
+      <div class="max-w-md">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">
+          Join Admin
+        </h1>
+        <p class="text-gray-600 leading-relaxed">
+          Create your account to start publishing articles, managing blogs,
+          and collaborating on content with ease.
+        </p>
+      </div>
+    </section>
+
+    <!-- Right Form Section -->
+    <section class="w-full md:w-1/2 flex items-center justify-center px-6">
+      <div class="w-full max-w-sm">
+
+        <!-- Logo -->
+        <div class="mb-10">
+          <a href="/admin" class="flex items-center gap-3">
+            <svg width="40" height="40" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <rect width="48" height="48" rx="12" fill="#111827" />
+              <path d="M14 14h20v4H14zM14 22h20v4H14zM14 30h12v4H14z" fill="#ffffff" />
+            </svg>
+
+            <span class="text-xl font-semibold tracking-tight text-gray-900">
+              Admin<span class="text-gray-400">.</span>
+            </span>
+          </a>
+        </div>
+        <!-- Heading -->
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">
+          Create Account
+        </h2>
+
+        <!-- Form -->
+        <form action="/auth/sign-up" method="post" class="space-y-6">
+
+          <!-- Name -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Full Name
+            </label>
+            <input type="text" name="userName" placeholder="Enter your name"
+              class="w-full border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-gray-800"
+              required />
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Email Address
+            </label>
+            <input type="email" name="userEmail" placeholder="user@email.com"
+              class="w-full border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-gray-800"
+              required />
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
+            <input type="password" name="userPassword" placeholder="Create a password"
+              class="w-full border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-gray-800"
+              required />
+          </div>
+
+          <!-- Button -->
+          <button type="submit"
+            class="w-full border border-gray-800 text-gray-900 py-2 text-sm font-medium hover:bg-gray-900 hover:text-white transition">
+            Register
+          </button>
+
+          <!-- Login Link -->
+          <p class="text-sm text-gray-600 text-center">
+            Already registered?
+            <a href="/auth" class="underline hover:text-gray-900">
+              Login here
+            </a>
+          </p>
+
+        </form>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- end -->
+  <%- include("partials/end.ejs") %>

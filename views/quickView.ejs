@@ -1,0 +1,113 @@
+<%- include("partials/start.ejs") %>
+<%- include("partials/navBar.ejs") %>
+
+<div class="min-h-screen bg-slate-100 pt-16 flex">
+  <%- include("partials/aside.ejs") %>
+
+  <div class="flex-1 lg:ml-64 px-4 sm:px-8 py-8">
+    <main class="max-w-6xl mx-auto">
+
+      <!-- Header -->
+      <div class="mb-10">
+        <a href="/admin"
+           class="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900 mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M10 19l-7-7 7-7"/>
+          </svg>
+          All Posts
+        </a>
+
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 class="text-2xl sm:text-3xl font-semibold text-slate-900">
+              Blog Preview
+            </h1>
+            <p class="text-sm text-slate-500">
+              ID: <span class="font-medium"><%= blog?.id %></span>
+            </p>
+          </div>
+
+          <div class="flex gap-3">
+            <a href="/admin/edit-form/<%= blog?.id %>"
+               class="px-4 py-2 text-sm font-medium rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition">
+              Edit Post
+            </a>
+
+            <a href="/admin/delete-blog/<%= blog?.id %>"
+               class="px-4 py-2 text-sm font-medium rounded-lg border border-red-300 text-red-600 hover:bg-red-50 transition">
+              Delete
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Layout -->
+      <section class="grid grid-cols-1 xl:grid-cols-4 gap-8">
+
+        <!-- Blog Content -->
+        <article class="xl:col-span-3 bg-white rounded-xl border border-slate-200 overflow-hidden">
+
+          <!-- Image -->
+          <div class="h-64 sm:h-80 bg-slate-200">
+            <img src="/<%= blog?.blogImage %>"
+                 alt="<%= blog?.blogTitle %>"
+                 class="w-full h-full object-cover">
+          </div>
+
+          <!-- Body -->
+          <div class="p-6 sm:p-8">
+            <h2 class="text-xl sm:text-2xl font-semibold text-slate-900 mb-4">
+              <%= blog?.blogTitle %>
+            </h2>
+
+            <div class="text-slate-700 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+              <%= blog.blogDescription %>
+            </div>
+          </div>
+        </article>
+
+        <!-- Info Panel -->
+        <aside class="bg-white rounded-xl border border-slate-200 p-6 h-fit">
+
+          <h3 class="text-sm font-semibold text-slate-900 mb-4">
+            Post Information
+          </h3>
+
+          <!-- Tags -->
+          <% if (blog?.blogTags) { const tags = blog.blogTags.split(","); %>
+            <div class="mb-6">
+              <p class="text-xs text-slate-500 mb-2">Tags</p>
+              <div class="flex flex-wrap gap-2">
+                <% tags.forEach(tag => { %>
+                  <span
+                    class="px-3 py-1 text-xs rounded-md bg-slate-100 text-slate-700">
+                    <%= tag.trim() %>
+                  </span>
+                <% }) %>
+              </div>
+            </div>
+          <% } %>
+
+          <!-- Meta -->
+          <div class="space-y-3 text-sm text-slate-600">
+            <div class="flex justify-between">
+              <span>Status</span>
+              <span class="font-medium text-emerald-600">Published</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Access</span>
+              <span class="font-medium">Public</span>
+            </div>
+          </div>
+
+        </aside>
+
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script src="/assets/js/app.bundle.js"></script>
+<%- include("partials/end.ejs") %>

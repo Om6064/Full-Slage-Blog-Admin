@@ -1,0 +1,23 @@
+<script src="/assets/js/buttons.js"></script>
+<script src="/assets/js/app.bundle.js"></script>
+
+<script>
+    const toggleBtn = document.getElementById("toggleSidebarMobile");
+    const sidebar = document.getElementById("sidebar");
+    const backdrop = document.getElementById("sidebarBackdrop");
+
+    toggleBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("hidden");
+        backdrop.classList.toggle("hidden");
+    });
+
+    backdrop.addEventListener("click", () => {
+        sidebar.classList.add("hidden");
+        backdrop.classList.add("hidden");
+    });
+</script>
+
+</body>
+
+
+</html>
