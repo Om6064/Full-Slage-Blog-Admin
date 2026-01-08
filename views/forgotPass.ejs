@@ -10,8 +10,8 @@
         Admin Platform
       </h1>
       <p class="text-gray-600 text-base leading-relaxed">
-        Blogster helps you publish, manage, and organize content efficiently.
-        Sign in to access your dashboard and continue your work.
+        Enter your registered email address and we’ll send you a one-time
+        password (OTP) to reset your account password.
       </p>
     </div>
   </section>
@@ -34,18 +34,18 @@
         </a>
       </div>
 
-      <!-- Form Title -->
+      <!-- Title -->
       <h2 class="text-2xl font-semibold text-gray-900 mb-6">
-        Account Login
+        Forgot Password
       </h2>
 
       <!-- Form -->
-      <form action="/auth" method="post" class="space-y-6">
+      <form action="/auth/forgot-password" method="post" class="space-y-6">
 
         <!-- Email -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">
-            Email
+            Email address
           </label>
           <input
             type="email"
@@ -56,43 +56,19 @@
           />
         </div>
 
-        <!-- Password -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
-            Password
-          </label>
-          <input
-            type="password"
-            name="userPassword"
-            class="w-full border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-gray-800"
-            placeholder="Enter password"
-            required
-          />
-        </div>
-
-        <!-- Forgot Password -->
-        <div class="text-right">
-          <a
-            href="/auth/forgot-password"
-            class="text-sm text-gray-600 hover:text-gray-900 underline"
-          >
-            Forgot password?
-          </a>
-        </div>
-
-        <!-- Login Button -->
+        <!-- Send OTP Button -->
         <button
           type="submit"
           class="w-full border border-gray-800 text-gray-900 py-2 text-sm font-medium hover:bg-gray-900 hover:text-white transition"
         >
-          Login
+          Send OTP
         </button>
 
-        <!-- Signup -->
+        <!-- Back to Login -->
         <p class="text-sm text-gray-600 text-center">
-          New user?
-          <a href="/auth/sign-up" class="underline hover:text-gray-900">
-            Create an account
+          Remembered your password?
+          <a href="/auth" class="underline hover:text-gray-900">
+            Back to login
           </a>
         </p>
 

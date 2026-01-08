@@ -1,6 +1,7 @@
 const UserModel = require("../models/userModel.js");
 const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const sendMail = require("../utils/sendMail.js");
 // Render signup page
 const renderSignUpPage = (req, res) => {
     res.render("signUp");
@@ -110,10 +111,35 @@ const logoutUser = (req, res) => {
     res.redirect("/");
 };
 
+const getForgotPasswordPage = (req,res) => {
+    return res.render("forgotPass")
+}
+
+const forgotPassword = async (req, res) => {
+    const { userEmail } = req.body
+
+    const user = await UserModel.findOne({ userEmail })
+
+    if (!user) {
+        return res.redirect("/forgotPass")
+    }
+
+    const otp = parseInt(100000 + Math.random() * 999999);
+    const hashedOTP = await bcrypt.hash(otp.toString(),10);
+
+    user.forgotPasswordOTP = hashedOTP;
+    user.forgotPasswordOTPExpiry = Date.now() + 10 *60 *1000
+    await user.save();
+
+    await sendMail(otp,"Send OTP For Resend Password", userEmail)
+}
+
 module.exports = {
     renderSignUpPage,
     renderLoginPage,
     registerUser,
     authenticateUser,
-    logoutUser
+    logoutUser,
+    getForgotPasswordPage,
+    forgotPassword
 };

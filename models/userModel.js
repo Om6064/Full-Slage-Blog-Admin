@@ -1,5 +1,5 @@
 const { name } = require("ejs");
-const { default: mongoose } = require("mongoose");
+const { default: mongoose, Types } = require("mongoose");
 
 const userSchema = new mongoose.Schema({
     userName: {
@@ -17,6 +17,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 3,
+    },
+    forgotPasswordOTP : {
+        type : String
+    },
+    forgotPasswordOTPExpiry : {
+        type : Date
     },
 })
 
