@@ -12,6 +12,20 @@ const renderLoginPage = (req, res) => {
     res.render("login");
 };
 
+const getResetPasswordPage = (req, res) => {
+    const email = req.cookies.resetEmail;
+    console.log(email);
+
+
+    if (!email) {
+        return res.redirect("/auth/forgot-password");
+    }
+
+    res.render("resetPassword", {
+        userEmail: email
+    });
+};
+
 // Register new user
 const registerUser = async (req, res) => {
     try {
@@ -111,7 +125,7 @@ const logoutUser = (req, res) => {
     res.redirect("/");
 };
 
-const getForgotPasswordPage = (req,res) => {
+const getForgotPasswordPage = (req, res) => {
     return res.render("forgotPass")
 }
 
@@ -121,18 +135,76 @@ const forgotPassword = async (req, res) => {
     const user = await UserModel.findOne({ userEmail })
 
     if (!user) {
-        return res.redirect("/forgotPass")
+        return res.redirect("/auth/forgot-password")
     }
 
     const otp = parseInt(100000 + Math.random() * 999999);
-    const hashedOTP = await bcrypt.hash(otp.toString(),10);
+    const hashedOTP = await bcrypt.hash(otp.toString(), 10);
 
     user.forgotPasswordOTP = hashedOTP;
-    user.forgotPasswordOTPExpiry = Date.now() + 10 *60 *1000
+    user.forgotPasswordOTPExpiry = Date.now() + 10 * 60 * 1000
     await user.save();
 
-    await sendMail(otp,"Send OTP For Resend Password", userEmail)
+    res.cookie("resetEmail", userEmail, {
+        httpOnly: true,
+        maxAge: 10 * 60 * 1000
+    })
+
+    await sendMail(otp, "Send OTP For Resend Password", userEmail)
+    res.redirect("/auth/reset-password")
 }
+
+const resetPassword = async (req, res) => {
+    try {
+        const { otp, newPassword, confirmPassword } = req.body;
+
+        const userEmail = req.cookies.resetEmail;
+
+        if (!userEmail) {
+            return res.redirect("/auth/forgot-password");
+        }
+
+        if (newPassword !== confirmPassword) {
+            return res.redirect("/auth/reset-password");
+        }
+
+        const user = await UserModel.findOne({ userEmail });
+
+        if (!user) {
+            return res.redirect("/auth/forgot-password");
+        }
+
+        if (!user.forgotPasswordOTP || user.forgotPasswordOTPExpiry < Date.now()) {
+            return res.redirect("/auth/forgot-password");
+        }
+
+        const isOTPValid = await bcrypt.compare(
+            otp.toString(),
+            user.forgotPasswordOTP
+        );
+
+        if (!isOTPValid) {
+            return res.redirect("/auth/reset-password");
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        user.userPassword = hashedPassword;
+        user.forgotPasswordOTP = undefined;
+        user.forgotPasswordOTPExpiry = undefined;
+
+        await user.save();
+
+        res.clearCookie("resetEmail");
+
+        return res.redirect("/auth");
+
+    } catch (error) {
+        console.error(error);
+        return res.redirect("/auth/reset-password");
+    }
+};
+
 
 module.exports = {
     renderSignUpPage,
@@ -141,5 +213,7 @@ module.exports = {
     authenticateUser,
     logoutUser,
     getForgotPasswordPage,
-    forgotPassword
+    forgotPassword,
+    getResetPasswordPage,
+    resetPassword
 };
