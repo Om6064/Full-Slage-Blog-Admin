@@ -16,14 +16,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const toast = getCookie("toast");
 
     const messages = {
-        register_success: { text: "Account created successfully. Please login.", type: "success" },
+        // Register
+        account_created: { text: "Account created successfully. Please login.", type: "success" },
         register_error: { text: "Registration failed. Try again.", type: "error" },
 
+        // Login
         login_success: { text: "Logged in successfully.", type: "success" },
         login_error: { text: "Invalid email or password.", type: "error" },
 
+        // Logout
         logout_success: { text: "Logged out successfully.", type: "success" },
 
+        // Blog CRUD
         blog_create_success: { text: "Blog created successfully.", type: "success" },
         blog_create_error: { text: "Failed to create blog.", type: "error" },
 
@@ -31,13 +35,24 @@ document.addEventListener("DOMContentLoaded", () => {
         blog_update_error: { text: "Failed to update blog.", type: "error" },
 
         blog_delete_success: { text: "Blog deleted successfully.", type: "success" },
-        blog_delete_error: { text: "Failed to delete blog.", type: "error" }
+        blog_delete_error: { text: "Failed to delete blog.", type: "error" },
+
+        // Forgot / Reset Password
+        wrong_old_password: { text: "Old password is incorrect.", type: "error" },
+        password_mismatch: { text: "New password and confirm password do not match.", type: "error" },
+        same_password_error: { text: "New password cannot be same as old password.", type: "error" },
+        password_reset_success: { text: "Password reset successfully.", type: "success" },
+        password_reset_error: { text: "Failed to reset password. Try again.", type: "error" },
+
+        // OTP
+        otp_invalid: { text: "Invalid OTP!", type: "error" },
+        otp_expired: { text: "OTP expired. Request a new one.", type: "error" },
+        otp_sent: { text: "OTP sent to your email.", type: "success" }
     };
 
     if (toast && messages[toast]) {
         showToast(messages[toast].text, messages[toast].type);
 
-        // delete cookie after showing toast
         document.cookie = "toast=; Max-Age=0; path=/";
     }
 });
@@ -46,11 +61,11 @@ function showToast(message, type) {
     const toast = document.createElement("div");
 
     toast.className = `
-    fixed top-6 right-6 z-50 px-6 py-4 rounded-lg shadow-lg
-    text-white text-sm font-medium
-    transition-all duration-300
-    ${type === "success" ? "bg-emerald-600" : "bg-red-600"}
-  `;
+        fixed top-6 right-6 z-50 px-6 py-4 rounded-lg shadow-lg
+        text-white text-sm font-medium
+        transition-all duration-300
+        ${type === "success" ? "bg-emerald-600" : "bg-red-600"}
+    `;
 
     toast.innerText = message;
     document.body.appendChild(toast);
@@ -63,4 +78,3 @@ function showToast(message, type) {
         toast.remove();
     }, 3000);
 }
-

@@ -205,6 +205,72 @@ const resetPassword = async (req, res) => {
     }
 };
 
+const getInteanstailResetPasswordPage = (req, res) => {
+    res.render("ireset");
+};
+
+
+const inteanstailResetPassword = async (req, res) => {
+    try {
+        const { oldPassword, newPassword, confirmPassword, userEmail } = req.body;
+
+        const user = await UserModel.findOne({ userEmail });
+        if (!user) {
+            return res.redirect("/auth/forgot-password");
+        }
+
+        const isOldCorrect = await bcrypt.compare(oldPassword, user.userPassword);
+        if (!isOldCorrect) {
+            res.cookie("toast", "wrong_old_password", {
+                httpOnly: false,
+                maxAge: 5000
+            });
+            return res.redirect("/auth/iReset-password");
+        }
+
+        if (newPassword !== confirmPassword) {
+            res.cookie("toast", "password_mismatch", {
+                httpOnly: false,
+                maxAge: 5000
+            });
+            return res.redirect("/auth/iReset-password");
+        }
+
+        const isSame = await bcrypt.compare(newPassword, user.userPassword);
+        if (isSame) {
+            res.cookie("toast", "same_password_error", {
+                httpOnly: false,
+                maxAge: 5000
+            });
+            return res.redirect("/auth/iReset-password");
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.userPassword = hashedPassword;
+        await user.save();
+
+        res.clearCookie("resetEmail");
+
+        res.cookie("toast", "password_reset_success", {
+            httpOnly: false,
+            maxAge: 5000
+        });
+
+        return res.redirect("/auth");
+
+    } catch (error) {
+        console.error(error);
+
+        res.cookie("toast", "password_reset_error", {
+            httpOnly: false,
+            maxAge: 5000
+        });
+
+        return res.redirect("/auth/iReset-password");
+    }
+};
+
+
 
 module.exports = {
     renderSignUpPage,
@@ -215,5 +281,7 @@ module.exports = {
     getForgotPasswordPage,
     forgotPassword,
     getResetPasswordPage,
-    resetPassword
+    resetPassword,
+    getInteanstailResetPasswordPage,
+    inteanstailResetPassword
 };
